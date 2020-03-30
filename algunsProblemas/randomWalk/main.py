@@ -1,5 +1,10 @@
 
+import matplotlib.pyplot as plt
+import time
 import random
+
+import tkinter
+matplotlib.use('TkAgg')
 
 def one_dimension_random_walk(numSteps):
     walk = []
@@ -21,7 +26,32 @@ def two_dimension_random_walk(numSteps):
         y_esperado += y_dimension[i]
     return x_esperado, y_esperado
 
+#------------------------------------------
 
+xrange = []
+for i in range(0,100):
+    xrange.append(random.randrange(-50,50))
 
-x, y = two_dimension_random_walk(100)
-print('x: ', x, 'y: ', y)
+ysample = random.sample(xrange, 100)
+
+xdata = []
+ydata = []
+
+plt.show()
+
+axes = plt.gca()
+axes.set_xlim(0, 100)
+axes.set_ylim(-50, +50)
+line, = axes.plot(xdata, ydata, 'r-')
+
+for i in range(100):
+    xdata.append(i)
+ydata.append(ysample[i])
+line.set_xdata(xdata)
+line.set_ydata(ydata)
+plt.draw()
+plt.pause(1e-17)
+time.sleep(0.1)
+
+# add this if you don't want the window to disappear at the end
+plt.show()
