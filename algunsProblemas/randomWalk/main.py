@@ -1,9 +1,9 @@
 
+import matplotlib
 import matplotlib.pyplot as plt
 import time
 import random
 
-import tkinter
 matplotlib.use('TkAgg')
 
 def one_dimension_random_walk(numSteps):
@@ -15,43 +15,61 @@ def one_dimension_random_walk(numSteps):
         posicaoEsperada += walk[i]
     return walk, posicaoEsperada
 
-def two_dimension_random_walk(numSteps):
-    x_dimension = []; x_esperado = 0
-    y_dimension = []; y_esperado = 0
+def two_dimension_random_walk(numSteps, plotar = False):
+    x_path = []; x_esperado = 0
+    y_path = []; y_esperado = 0
+    maior_valor_absoluto_x = 0
+    maior_valor_absoluto_y = 0
+
     steps = [-1,1]
     for i in range(0, numSteps):
-        x_dimension.append(random.choice(steps))
-        y_dimension.append(random.choice(steps))
-        x_esperado += x_dimension[i]
-        y_esperado += y_dimension[i]
-    return x_esperado, y_esperado
+        x_path.append(random.choice(steps))
+        y_path.append(random.choice(steps))
+        x_esperado += x_path[i]
+        y_esperado += y_path[i]
 
-#------------------------------------------
+        if(abs(x_esperado) > maior_valor_absoluto_x):
+            maior_valor_absoluto_x = abs(x_esperado)
+        if(abs(y_esperado) > maior_valor_absoluto_y):
+            maior_valor_absoluto_y = abs(y_esperado)
 
-xrange = []
-for i in range(0,100):
-    xrange.append(random.randrange(-50,50))
+    if(plotar == False):
+        return x_esperado, y_esperado, x_path, y_path
 
-ysample = random.sample(xrange, 100)
+    else:
+        #-- Exibe informações na saída padrao
+        print('[X, Y] = [',x_esperado,',',y_esperado,']')
+        print('Path X = ', x_path)
+        print('Path Y = ', y_path)
 
-xdata = []
-ydata = []
+        # -- PLOTAGEM
+        xdata = []
+        ydata = []
 
-plt.show()
+        plt.show()
+        ax = plt.gca()
+        ax.set_xlim(-(maior_valor_absoluto_x+5), (maior_valor_absoluto_x+5))
+        ax.set_ylim(-(maior_valor_absoluto_y+5), (maior_valor_absoluto_y+5))
 
-axes = plt.gca()
-axes.set_xlim(0, 100)
-axes.set_ylim(-50, +50)
-line, = axes.plot(xdata, ydata, 'r-')
+        line, = ax.plot(xdata, ydata, 'r-')
 
-for i in range(100):
-    xdata.append(i)
-ydata.append(ysample[i])
-line.set_xdata(xdata)
-line.set_ydata(ydata)
-plt.draw()
-plt.pause(1e-17)
-time.sleep(0.1)
+        tempx = 0
+        tempy = 0
 
-# add this if you don't want the window to disappear at the end
-plt.show()
+        for i in range(0, numSteps):
+            xdata.append(tempx)
+            ydata.append(tempy)
+            line.set_xdata(xdata)
+            line.set_ydata(ydata)
+            plt.draw()
+            plt.pause(1e-17)
+            time.sleep(0.1)
+            tempx += x_path[i]
+            tempy += y_path[i]
+
+        plt.show()
+        #-------------------------
+        return x_esperado, y_esperado, x_path, y_path
+
+
+x, y, xPath, yPath = two_dimension_random_walk(500, True)
