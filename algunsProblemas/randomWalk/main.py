@@ -53,8 +53,16 @@ def two_dimension_random_walk(numSteps, plotar = False):
 
         plt.show()
         ax = plt.gca() # "grabs the current axes", pega o atual objeto Axes
-        ax.set_xlim(-(maior_valor_absoluto_x+5), (maior_valor_absoluto_x+5)) #delimitando x_lim, aumentando seu tamanho somando o valor de 5, escolhido de forma arbitraria
-        ax.set_ylim(-(maior_valor_absoluto_y+5), (maior_valor_absoluto_y+5)) #similar a linha acima para o eixo y
+        ax.set_title('Random walk 2D')
+
+        # utilizado apenas para se determinar qual eixo possui maior tamanho,
+        # desse modo se determina axe_big, para que a plotagem fique simetrica em relação aos eixos x e y
+        axe_big = maior_valor_absoluto_y
+        if(maior_valor_absoluto_x > maior_valor_absoluto_y):
+            axe_big = maior_valor_absoluto_x
+
+        ax.set_xlim(-(axe_big+5), (axe_big+5)) #delimitando x_lim, aumentando seu tamanho somando o valor de 5, escolhido de forma arbitraria
+        ax.set_ylim(-(axe_big+5), (axe_big+5)) #similar a linha acima para o eixo y
 
         line, = ax.plot(xdata, ydata, 'r-')
 
@@ -72,6 +80,7 @@ def two_dimension_random_walk(numSteps, plotar = False):
             tempx += x_path[i]
             tempy += y_path[i]
 
+        #plt.savefig('random_walk.png') # Utilizando para salvar o arquivo de plotagem/imagem, formato 'png', nome 'random_walk'
         plt.show()
         #-------------------------
         return x_esperado, y_esperado, x_path, y_path
