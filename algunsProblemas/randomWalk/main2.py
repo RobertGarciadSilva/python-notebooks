@@ -8,7 +8,7 @@ import matplotlib.animation as animation
 def randdom_walk_two_dimensions(num_steps=100, plotagem=False):
     x_walk = []; y_walk = []
     x_end = 0; y_end = 0
-    x_mod, x_mod = 0, 0
+    x_mod, y_mod = 0, 0
     step = [-1,1]
     for i in range(0,num_steps):
         x_walk.append(random.choice(step))
@@ -60,7 +60,7 @@ def randdom_walk_two_dimensions(num_steps=100, plotagem=False):
 
             return line,
 
-        an = animation.FuncAnimation(fig, update, init_func=init, frames=num_steps, interval=60, blit=True, repeat=False)
+        an = animation.FuncAnimation(fig, update, init_func=init, frames=num_steps, interval=50, blit=True, repeat=False)
         #Objeto para a realiação da animação.
         #   - fig é o objeto onde será plotado
         #   - init_func, parâmetro que realiza a chamada da função inicial para a plotagem da animação
