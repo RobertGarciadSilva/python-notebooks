@@ -1,4 +1,8 @@
 
+# Random walk one and two dimension
+#Plotagem without plot animation
+
+
 import matplotlib
 import matplotlib.pyplot as plt
 import time
