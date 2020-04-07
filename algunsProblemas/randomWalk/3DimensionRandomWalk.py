@@ -1,4 +1,5 @@
 #Random Walk in three dimension
+# This code don't is the better way to do plot 3D of Random Walk, see in file "3DimensionRandomWalkFile2.py" a better way.
 
 from mpl_toolkits.mplot3d import axes3d #Usado para plotagem 3d
 import matplotlib.pyplot as plt
