@@ -35,4 +35,8 @@ ax3.grid(axis='y', linestyle='-')
 ax3.plot(x, y, 'r-', label=('sin(x)')) #definindo plotagem e a label para legenda
 ax3.plot(x, y2, 'b-', label=('cos(x)'))
 ax3.legend(loc=(0.82, 0.6)) #definindo a legenda, é baseada nas "labels" adiconado nos plots
+
+
+plt.savefig('subplotsSenCos.png') # salvar figura
+
 plt.show()

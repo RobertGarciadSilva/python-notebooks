@@ -54,6 +54,8 @@ ax[1][1].set_title("Distribuição escala logaritimica")
 ax[1][1].spines['top'].set_visible(False)
 ax[1][1].spines['right'].set_visible(False)
 
+# save plot
+plt.savefig('subplots.png')
 
 # display plotagem 
 
