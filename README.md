@@ -12,3 +12,4 @@ Here are some python files.
 - Car Evaluation (http://archive.ics.uci.edu/ml/datasets/Car+Evaluation)
 - Sdudent Performance (http://archive.ics.uci.edu/ml/datasets/Student+Performance)
 - Titanic: Machine Learning from Disaster (https://www.kaggle.com/c/titanic)
+- Pokemon data set.
