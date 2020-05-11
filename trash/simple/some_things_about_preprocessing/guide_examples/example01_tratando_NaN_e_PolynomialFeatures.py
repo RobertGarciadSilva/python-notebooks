@@ -4,10 +4,12 @@ import pandas as pd
 
 from sklearn.impute import MissingIndicator # Para tratar os valors nan, usado para guardar as ocorrências dos valores NaN.
 from sklearn.impute import SimpleImputer # Para tratar os valores nan, substituindo eles por outro valor, por exemplo o valor da mediana.
+from sklearn.preprocessing import PolynomialFeatures # Para transformações polinomiais
 
-#Função para gerar simples random data toy
+
+#Função para gerar simples random dataExported toy
 def ger_random_data_Toy(num_rows=10,num_cols=4, min_value=0, max_value=100, size_Notnumber=0.1):
-    """Gera random simple data toys"""
+    """Gera random simple dataExported toys"""
     x = np.random.randint(min_value, max_value+1, num_rows*num_cols) #cria array com valores aleatorios baseado num argumentos fornecidos
     x = x.astype('float64') #transforma o array acima do tipo 'int' para o tipo 'float64'
 
@@ -23,6 +25,7 @@ def ger_random_data_Toy(num_rows=10,num_cols=4, min_value=0, max_value=100, size
     x = x.reshape(num_rows, num_cols) #define o formato [num_rows, num_cols]
     return x
 
+
 #Usando a função para gerar dados aleatorios
 x = ger_random_data_Toy(num_rows=20, size_Notnumber=0.2)
 
@@ -33,6 +36,7 @@ x = ger_random_data_Toy(num_rows=20, size_Notnumber=0.2)
 
 
 data = pd.DataFrame(x, columns=['feature1','feature2','feature3','featura4'])
+data.to_csv(r'./dataExported/example01_tratando_NaN_e_PolynomialFeaturesBefore.csv', index=False, header=True) # salvando DataFrame dataExported em um arquivo
 print(data, end='\n\n')
 
 data.dropna(axis=0,thresh=3, inplace=True)
@@ -63,7 +67,7 @@ for i, val in zip(countNaN, countNaN.keys()): #armazena os novos nomes das colun
 
 
 indicator_nan = MissingIndicator(missing_values=np.NaN) #cria objeto MissingIndicator indicando que os valores NaN são valores do tipo np.NaN
-indicator_nan = indicator_nan.fit_transform(data) #passa o DataFrame 'data' como argumento para a função 'fit_transform' com retorno um array boolean indicando valores NaN.
+indicator_nan = indicator_nan.fit_transform(data) #passa o DataFrame 'dataExported' como argumento para a função 'fit_transform' com retorno um array boolean indicando valores NaN.
 dataFrame_indicatorNan = pd.DataFrame(indicator_nan, columns=colNan) #cria DataFrame com base no array acima
 
 print(dataFrame_indicatorNan, end='\n\n')
@@ -81,11 +85,40 @@ print(data_imputed_NaN, end='\n\n') # Dados em que os valores NaN foram substitu
 # outra forma de fazer-se isso é utilizando o pandas.
 
 data.fillna(data.median(), inplace=True)
+print(data, end='\n\n')
+
+
+# ---- polynomial features
+
+#Aqui utilizamos o módulo 'PolynomialFeatures' do sklearn.preprocessing para
+# a criação de relações, não lineares, entre as colunas númericas.
+
+poly = PolynomialFeatures(degree=2, interaction_only=True)
+#Aqui é criado o objeto PolynomialFeatures, em que:
+# 'degree' representa o maior grau das relações e 'interaction_oly' = True representa que
+# queremos relações apenas entre os valores das colunas e não entre uma coluna e ela mesma.
+# os parâmetros colocados dessa forma nos dão, por exemplo, as seguintes relações:
+# 1, feature1, feature2, feature3, feature4, feature1*feature2, feature1*feature3, feature1*feature4
+# feature2*feature3, feature2*feature4, feature3*feature4
+# Observe: Dois graus de liberdade para multiplicação e apenas relações entre as feature e não entre elas mesmas.
+# Observe também que os primeiros 5 resultados são 1 e as próprias features, abaixo utilizamos um slice
+# para retirar esses 4 primeiros valores e só pegarmos a partir do 5 valor.
+# Observe a saída abaixo.
+
+poly_features = poly.fit_transform(data)[:,5:] # aplicando fit.transform, pegando apenas a partir da quinta coluna de cada linha.
+
+data_features_poly = pd.DataFrame(poly_features, columns=['feature1*feature2', 'feature1*feature3', 'feature1*feature4', \
+                                                          'feature2*feature3', 'feature2*feature4', f'eature3*feature4'])
+
+print(data_features_poly, end='\n\n')
+
+# Abaixo realizamos a concatenação entre nossos dados originais (com modificação dos valores NaN ) e as novas colunas criadas.
+
+print('\n\nDataFrame Final: '); print('\n')
+
+data = pd.concat([data, dataFrame_indicatorNan,data_features_poly], axis=1)
+data.to_csv(r'./dataExported/example01_tratando_NaN_e_PolynomialFeaturesAfter.csv', index=False, header=True) # Salvando dataExported final
 print(data)
-
-
-
-
 
 # Refereneces
 
