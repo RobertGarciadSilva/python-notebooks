@@ -105,6 +105,8 @@ poly = PolynomialFeatures(degree=2, interaction_only=True)
 # para retirar esses 4 primeiros valores e só pegarmos a partir do 5 valor.
 # Observe a saída abaixo.
 
+# You can get the columns applying: poly.get_feature_names()
+
 poly_features = poly.fit_transform(data)[:,5:] # aplicando fit.transform, pegando apenas a partir da quinta coluna de cada linha.
 
 data_features_poly = pd.DataFrame(poly_features, columns=['feature1*feature2', 'feature1*feature3', 'feature1*feature4', \
