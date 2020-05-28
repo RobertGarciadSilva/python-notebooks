@@ -60,21 +60,19 @@ model = make_pipeline(PolynomialFeatures(), LinearRegression())
 # observar onde o parametro, desse caso o "degree" faz uma melhor
 # troca entre bias e variance.
 
-train_score, validadtion_score = validation_curve(model, x[:, np.newaxis], y, param_name="polynomialfeatures__degree", param_range=degree)
+train_score, validation_score = validation_curve(model, x[:, np.newaxis], y, param_name="polynomialfeatures__degree", param_range=degree, cv=5) # cv, cross validation splitt, para mais detalhes veja a referência 3
 
-plt.plot(degree, np.median(train_score,1), color='blue', label="train_score")
-plt.plot(degree, np.median(validadtion_score,1), color='green', label="Validation_score")
+#plt.plot(degree, train_score, color='blue')
+plt.plot(degree, np.median(train_score,1), color='red', label="train_score") # median com "1" significa que a mediana é feita pelas linhas, "0" para as colunas
+plt.plot(degree, np.median(validation_score,1), color='green', label="Validation_score")
 plt.title("Validation curve")
 plt.xticks(np.arange(0,20))
 plt.legend()
-plt.savefig('validation_curve_PolynomialFeatures_AND_LinearRegression.png')
+#plt.savefig('validation_curve_PolynomialFeatures_AND_LinearRegression.png')
 plt.show()
-
 
 # pelo gráfico pode-se perceber que o melhor degree que equilibra
 # the bias and variance (underfitn and overfitn) está por volta do degree 4
-
-
 
 # --- plots
 
@@ -90,3 +88,4 @@ plt.show()
 
 #[1] https://scipy-lectures.org/packages/scikit-learn/auto_examples/plot_bias_variance.html
 #[2] https://jakevdp.github.io/PythonDataScienceHandbook/05.03-hyperparameters-and-model-validation.html
+#[3] https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.validation_curve.html
