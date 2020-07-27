@@ -1,7 +1,7 @@
 
 # some useful functions to EDA
 
-from math import sqrt, floor
+from math import sqrt, floor, ceil
 from numpy import arange, around
 
 def createBinsIntHistogram(edgeMin, edgeMax, numReg=None, numBins=None, floor_ar=False):
@@ -39,14 +39,27 @@ def createBinsIntHistogram(edgeMin, edgeMax, numReg=None, numBins=None, floor_ar
     n = createBinsIntHistogram(4, 23.3, 36, floor_ar=True)
     Output: n = [ 4.  7. 10. 13. 16. 19. 22.]
 
+    Example:
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    dados = np.random.randn(100)
+
+    axe = plt.gca()
+    myBins = createBinsIntHistogram(min(dados), max(dados), numReg=len(dados))
+    axe.hist(x=dados, bins=myBins, edgecolor='black')
+    axe.set_xticks(myBins)
+    plt.show()
+
     References:
 
     [1]http://leg.ufpr.br/~fernandomayer/aulas/ce001e-2016-2/02_Analise_Exploratoria_de_Dados.html
 
 
     """
-
     amplitude = edgeMax - edgeMin
+    abs(amplitude)
+
     if not numBins:
         numBins = sqrt(numReg)
 
@@ -57,7 +70,12 @@ def createBinsIntHistogram(edgeMin, edgeMax, numReg=None, numBins=None, floor_ar
     else:
         ampClass = floor(ampClass +1)
 
-    return arange(edgeMin, edgeMax +1, ampClass)
+    if edgeMin > 0:
+        min = floor(edgeMin)
+    else:
+        min = ceil(edgeMin)
+
+    return arange(min, edgeMax +1, ampClass)
 
 
 
@@ -133,7 +151,6 @@ def label_densityHist(ax, n, bins, x=4, y=0.01, r=2, **kwargs):
         y_pos = n[i] + (n[i] * y)
         label = str(k[i]) # relative frequency of each bin
         ax.text(x_pos, y_pos, label, kwargs)
-
 
 
 
